@@ -2,7 +2,7 @@ namespace Domain.Enum;
 
 public enum StudentGroupStatus
 {
-    Active, 
-    Left,
-    Finished
+    Активен, 
+    Отчислен,
+    Завершил
 }

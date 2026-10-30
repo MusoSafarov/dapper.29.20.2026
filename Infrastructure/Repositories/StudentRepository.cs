@@ -8,48 +8,48 @@ namespace Infrastructure.Repositories;
 public class StudentRepository(Database database):IStudent
 {
     private Database _context = database;
-    public bool AddStudent(Students student)
+    public  async Task < bool> AddStudentAsync(Students student)
     {
         using var connection = _context.Connection();
         connection.Open();
         var query = "insert into students(fullname, email, phone, Enrollmentdate) values(@fullname, @email, @phone, @enrollmentdate)";
-        var result = connection.Execute(query, student);
+        var result = await connection.ExecuteAsync(query, student);
         return result>0;
     }
 
-    public bool DeleteStudent(int studentId)
+    public async Task < bool> DeleteStudentAsync(int studentId)
     {
         using var connection = _context.Connection();
         connection.Open();
         var query = "delete from students where id=@studentid";
-        var result = connection.Execute(query, new{studentId});
+        var result = await connection.ExecuteAsync(query, new{studentId});
         return result>0;
     }
 
-    public Students GetStudent(int studentId)
+    public async Task < Students> GetStudentAsync(int studentId)
     {
         using var connection = _context.Connection();
         connection.Open();
         var query = "select * from students where id=@studentid";
-        var result = connection.QuerySingle<Students>(query, new{studentId});
+        var result = await connection.QuerySingleAsync<Students>(query, new{studentId});
         return result;
     }
 
-    public List<Students> GetStudents()
+    public async Task < List<Students>> GetStudentsAsync()
     {
         using var connection = _context.Connection();
         connection.Open();
         var query = "select * from students";
-        var result = connection.Query<Students>(query).ToList();
-        return result;
+        var result = await connection.QueryAsync<Students>(query);
+        return result.ToList();
     }
 
-    public bool UpdateStudent(Students student)
+    public async Task < bool> UpdateStudentAsync(Students student)
     {
         using var connection = _context.Connection();
         connection.Open();
         var query = "update students set fullname=@fullname, email=@email, phone=@phone, Enrollmentdate=@enrollmentdate where id=@studentid";
-        var result = connection.Execute(query, student);
+        var result = await connection.ExecuteAsync(query, student);
         return result>0;
     }
 

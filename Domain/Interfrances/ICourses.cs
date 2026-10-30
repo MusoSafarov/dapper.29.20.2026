@@ -4,9 +4,9 @@ namespace Domain.Interfrances;
 
 public interface ICourses
 {
-    bool AddCourse(Courses student);
-    bool UpdateCourse(Courses student);
-    bool DeleteCourse(int studentId);
-    Courses GetCourse(int studentId);
-    List<Courses> GetCourses();
+    Task <bool> AddCourseAsync(Courses student);
+    Task <bool> UpdateCourseAsync(Courses student);
+    Task <bool> DeleteCourseAsync(int studentId);
+    Task <Courses> GetCourseAsync(int studentId);
+    Task <List<Courses>> GetCoursesAsync();
 }

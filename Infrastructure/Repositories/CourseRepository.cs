@@ -8,49 +8,49 @@ namespace Infrastructure.Repositories;
 public class CourseRepository(Database database):ICourses
 {
      private Database _context = database;
-    public bool AddCourse(Courses Course)
+    public async Task <bool> AddCourseAsync(Courses Course)
     {
         using var connection = _context.Connection();
         connection.Open();
         var query = "insert into Courses(title,description,durationweeks) values(@title,@description,@durationweeks)";
-        var result = connection.Execute(query, Course);
+        var result = await connection.ExecuteAsync(query, Course);
         return result>0;
     }
 
-    public bool DeleteCourse(int CourseId)
+    public async Task <bool> DeleteCourseAsync(int CourseId)
     {
         using var connection = _context.Connection();
         connection.Open();
         var query = "delete from Courses where id=@Courseid";
-        var result = connection.Execute(query, new{CourseId});
+        var result = await connection.ExecuteAsync(query, new{CourseId});
         return result>0;
     }
 
-    public Courses GetCourse(int CourseId)
+    public async Task <Courses> GetCourseAsync(int CourseId)
     {
         using var connection = _context.Connection();
         connection.Open();
         var query = "select * from Courses where id=@Courseid";
-        var result = connection.QuerySingle<Courses>(query, new{CourseId});
+        var result = await connection.QuerySingleAsync<Courses>(query, new{CourseId});
         return result;
     }
 
-    public List<Courses> GetCourses()
+    public async Task <List<Courses>> GetCoursesAsync()
     {
         using var connection = _context.Connection();
         connection.Open();
         var query = "select * from Courses";
-        var result = connection.Query<Courses>(query).ToList();
-        return result;
+        var result = await connection.QueryAsync<Courses>(query);
+        return result.ToList();
     }
 
 
-    public bool UpdateCourse(Courses Course)
+    public async Task <bool> UpdateCourseAsync(Courses Course)
     {
         using var connection = _context.Connection();
         connection.Open();
-        var query = "update Courses set fullname=@fullname, email=@email, phone=@phone, Enrollmentdate=@enrollmentdate where id=@Courseid";
-        var result = connection.Execute(query, Course);
+        var query = "update Courses set title = @title, description = @description, durationweeks = @durationweeks where id=@Courseid";
+        var result = await connection.ExecuteAsync(query, Course);
         return result>0;
     }
 
